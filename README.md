@@ -82,6 +82,9 @@ compile 'com.jwkj:commwebview:v1.2.6'
 ![](https://github.com/huangdali/commwebview/blob/master/image_us.png)
 
 ## 版本记录
+v1.2.7 ( [2018.11.7]() )
+
+- 【优化】新增监听页面URL变化接口
 
 v1.2.6 ( [2018.03.22]() )
 
