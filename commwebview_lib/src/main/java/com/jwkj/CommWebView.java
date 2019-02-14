@@ -129,10 +129,10 @@ public class CommWebView extends LinearLayout {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (shouldLoadingUrl()) {
-                    loadWebUrl(url);
-                    return true;
-                }
+//                if (shouldLoadingUrl()) {
+//                    loadWebUrl(url);
+//                    return true;
+//                }
                 return false;//设置为false才有效哦
             }
 
