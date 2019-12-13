@@ -2,15 +2,20 @@ package com.jwkj;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
@@ -36,6 +41,7 @@ import java.lang.reflect.Method;
  */
 
 public class CommWebView extends LinearLayout {
+    private static final String TAG = "CommWebView";
     /**
      * 是否可以返回上一个页面，默认可以返回上一个页面
      */
@@ -129,11 +135,20 @@ public class CommWebView extends LinearLayout {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                if (shouldLoadingUrl()) {
-//                    loadWebUrl(url);
-//                    return true;
-//                }
-                return false;//设置为false才有效哦
+                if (TextUtils.isEmpty(url)) return false;
+                Log.e(TAG, "shouldOverrideUrlLoading url = " + url);
+                try {
+                    if (url.startsWith("alipays://") || url.startsWith("weixin://") || url.startsWith("tel://")) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        if (context != null) {
+                            context.startActivity(intent);
+                        }
+                        return true;
+                    }
+                }catch (Exception e) {
+                    return false;
+                }
+                return false;
             }
 
             public boolean shouldLoadingUrl() {
@@ -175,11 +190,28 @@ public class CommWebView extends LinearLayout {
             }
 
             @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                super.onReceivedSslError(view, handler, error);
-                handler.cancel();
+            public void onReceivedSslError(WebView view, final SslErrorHandler handler, SslError error) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setMessage(R.string.notification_error_ssl_cert_invalid);
+                builder.setPositiveButton(R.string.webview_continue, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        handler.proceed();
+                    }
+                });
+
+                builder.setNegativeButton(R.string.webview_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        handler.cancel();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
+
         webview.setWebChromeClient(webview.new WebChromeClientEx() {//监听加载的过程
             private View mCustomView;
             private CustomViewCallback mCustomViewCallback;

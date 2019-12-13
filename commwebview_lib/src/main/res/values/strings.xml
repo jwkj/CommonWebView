@@ -3,4 +3,7 @@
     <string name="app_name1">CommWebView</string>
     <string name="comm_hdl_web_url_default">file:///android_asset/comm_hdl_web_error_us.html</string>
     <string name="comm_hdl_web_url_default2">file:///android_asset/net_error_us.html</string>
+    <string name="notification_error_ssl_cert_invalid">SSL authentication failed. Do you want to continue?</string>
+    <string name="webview_continue">continue</string>
+    <string name="webview_cancel">cancel</string>
 </resources>

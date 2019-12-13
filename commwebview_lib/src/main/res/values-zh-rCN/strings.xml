@@ -3,4 +3,7 @@
     <string name="app_name1">CommWebView</string>
     <string name="comm_hdl_web_url_default">file:///android_asset/comm_hdl_web_error.html</string>
     <string name="comm_hdl_web_url_default2">file:///android_asset/net_error.html</string>
+    <string name="notification_error_ssl_cert_invalid">SSL认证失败，是否继续访问？</string>
+    <string name="webview_continue">继续</string>
+    <string name="webview_cancel">取消</string>
 </resources>
